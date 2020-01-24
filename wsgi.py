@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, render_template
+from flask_admin import Admin
 from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -10,6 +11,10 @@ ma = Marshmallow(app)
 
 from models import Product
 from schemas import products_schema
+from flask_admin.contrib.sqla import ModelView
+
+admin = Admin(app, template_mode='bootstrap3')
+admin.add_view(ModelView(Product, db.session))
 
 @app.route('/hello')
 def hello():
