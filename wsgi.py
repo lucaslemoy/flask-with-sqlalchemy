@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -33,3 +33,15 @@ def products_add():
     #products = db.session.query(Product).get(id_product)
     #return jsonify(mon_dico)
     return '',204
+
+@app.route('/')
+def home():
+    products = db.session.query(Product).all()
+
+    return render_template('home.html', products=products)
+
+@app.route('/<int:id>')
+def product_html(id):
+    product = db.session.query(Product).get(id)
+    return render_template('product.html', product=product)
+
